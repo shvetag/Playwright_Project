@@ -1,0 +1,14 @@
+var message = "Hello world!";
+console.log(message);
+message = "Good Morning !!";
+console.log(message);
+var age = 23;
+console.log(age);
+var isActive = false;
+console.log(isActive);
+var numberArry = [1, 2, 3, 4];
+console.log(numberArry);
+var data = "this could be anything";
+console.log(data);
+data = 45;
+console.log(data);
