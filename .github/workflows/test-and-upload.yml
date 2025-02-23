@@ -7,7 +7,7 @@ on:
 
 jobs:
   test-and-report:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout Repository
@@ -20,12 +20,15 @@ jobs:
 
     - name: Install Dependencies
       run: npm install
+      shell: bash
 
     - name: Run Tests
       run: npm run test:regression
+      shell: bash
 
     - name: Upload Test Results to Xray
       run: |
         TOKEN=$(curl -H "Content-Type: application/json" -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" -d '{"client_id": "${{ secrets.XRAY_CLIENT_ID }}", "client_secret": "${{ secrets.XRAY_CLIENT_SECRET }}"}' | tr -d '"')
         
-        curl -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/cucumber" --data @reports/cucumber-report.json
+        Invoke-RestMethod -Uri "https://xray.cloud.getxray.app/api/v2/import/execution/cucumber" -Method Post -Headers @{"Content-Type"="application/json"; "Authorization"="Bearer $TOKEN"} -InFile "reports/cucumber-report.json"
+        shell: pwsh
