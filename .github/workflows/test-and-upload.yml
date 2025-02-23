@@ -1,0 +1,31 @@
+name: Run Tests and Upload Results to Xray
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-and-report:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Tests
+      run: npm run test:regression
+
+    - name: Upload Test Results to Xray
+      run: |
+        TOKEN=$(curl -H "Content-Type: application/json" -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" -d '{"client_id": "${{ secrets.XRAY_CLIENT_ID }}", "client_secret": "${{ secrets.XRAY_CLIENT_SECRET }}"}' | tr -d '"')
+        
+        curl -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/cucumber" --data @reports/cucumber-report.json
