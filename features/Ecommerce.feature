@@ -1,4 +1,4 @@
-Feature: Ecommerce test validation
+Feature: Ecommerce test validation after Xray Configuration
 
 @Regression
   Scenario Outline: Placing the order1
