@@ -7,7 +7,7 @@
     "regression": "npx playwright test",
     "ClientAppPO": "npx playwright test tests/ClientAppPO.spec.js",
     "CucumberRegression": "npx cucumber-js --tags '@Regression' --exit --format html:cucumber-result.html",
-    "test:regression": "cucumber-js --tags \"@Regression\" --exit --format html:cucumber-result.html"
+    "test:regression": "cucumber-js --tags \"@Regression\" --format json:./reports/cucumber-report.json"
   },
   "keywords": [],
   "author": "",
