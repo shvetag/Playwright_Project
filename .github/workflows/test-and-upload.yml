@@ -44,7 +44,7 @@ jobs:
         echo "TOKEN=$response" >> $env:GITHUB_ENV
       shell: pwsh  # Using PowerShell
 
-     - name: Upload Test Results to Xray
+    - name: Upload Test Results to Xray
       run: |
         $headers = @{
           "Content-Type" = "application/json"
