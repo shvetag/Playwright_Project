@@ -44,7 +44,7 @@ jobs:
         echo "TOKEN=$response" >> $env:GITHUB_ENV
       shell: pwsh  # Using PowerShell
 
-    - name: Upload Test Results to Xray
+     - name: Upload Test Results to Xray
       run: |
         $headers = @{
           "Content-Type" = "application/json"
@@ -52,14 +52,16 @@ jobs:
         }
 
         $body = @{
-          "testExecutionKey" = "SCRUM-25"   # Change this to your test execution key
+          "testExecutionKey" = "SCRUM-25"   # Replace with actual Test Execution Key
           "tests" = @(
             @{
               "testKey" = "SCRUM-5"
-              "status" = "PASS"
+              "status" = "PASSED"
             }
           )
         } | ConvertTo-Json -Depth 10
 
-        Invoke-RestMethod -Uri "https://xray.cloud.getxray.app/api/v2/import/execution/cucumber" -Method POST -Headers $headers -Body $body
-      shell: pwsh  # Using PowerShell
+        $body | Out-File -FilePath xray_payload.json  # Save to file for debugging
+
+        Invoke-RestMethod -Uri "https://xray.cloud.getxray.app/api/v2/import/execution" -Method POST -Headers $headers -Body (Get-Content -Raw xray_payload.json)
+      shell: pwsh
