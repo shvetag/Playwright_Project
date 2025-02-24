@@ -35,4 +35,6 @@ AfterStep( async function ({result}) {
   if (this.browser) {
       await this.browser.close(); // Close browser
   }
+    // Force exit to prevent workflow from hanging
+    process.exit(0);
 });
