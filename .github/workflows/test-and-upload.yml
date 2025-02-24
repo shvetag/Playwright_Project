@@ -28,39 +28,38 @@ jobs:
       run: npm run test:regression
       shell: bash
 
-    - name: Upload Test Results to Xray
-      shell: pwsh
+    - name: Authenticate with Xray and Get Token
+      id: xray_auth
       run: |
-        # Authenticate with Xray and get token
-        $clientId = "${{ secrets.XRAY_CLIENT_ID }}"
-        $clientSecret = "${{ secrets.XRAY_CLIENT_SECRET }}"
-        $authUrl = "https://xray.cloud.getxray.app/api/v2/authenticate"
-        $authBody = @{ client_id = $clientId; client_secret = $clientSecret } | ConvertTo-Json
-        $authResponse = Invoke-RestMethod -Uri $authUrl -Method Post -Body $authBody -ContentType "application/json"
+        $headers = @{
+          "Content-Type" = "application/json"
+        }
         
-        # Log the response to debug
-        Write-Host "Authentication Response: $($authResponse | ConvertTo-Json -Depth 5)"
+        $body = @{
+          "client_id" = "${{ secrets.XRAY_CLIENT_ID }}"
+          "client_secret" = "${{ secrets.XRAY_CLIENT_SECRET }}"
+        } | ConvertTo-Json
         
-        # Check if the token exists in the response
-        if ($authResponse.token) {
-          $TOKEN = $authResponse.token
-        } else {
-          Write-Host "Authentication failed. Response: $($authResponse | ConvertTo-Json -Depth 5)"
-          exit 1
+        $response = Invoke-RestMethod -Uri "https://xray.cloud.getxray.app/api/v2/authenticate" -Method POST -Headers $headers -Body $body
+        echo "TOKEN=$response" >> $env:GITHUB_ENV
+      shell: pwsh  # Using PowerShell
+
+    - name: Upload Test Results to Xray
+      run: |
+        $headers = @{
+          "Content-Type" = "application/json"
+          "Authorization" = "Bearer ${{ env.TOKEN }}"
         }
 
-        # Define the Test Execution Key and Test Results
-        $TEST_EXECUTION_KEY = "NEW_KEY"  # Optionally, use an existing Test Execution Key
-        $TEST_RESULTS = @{
-            testExecutionKey = $TEST_EXECUTION_KEY
-            tests = @(
-                @{
-                    testKey = "SCRUM-5"
-                    status = "PASS"
-                }
-            )
-        } | ConvertTo-Json
+        $body = @{
+          "testExecutionKey" = "SCRUM-25"   # Change this to your test execution key
+          "tests" = @(
+            @{
+              "testKey" = "SCRUM-5"
+              "status" = "PASS"
+            }
+          )
+        } | ConvertTo-Json -Depth 10
 
-        # Upload the test execution result to Xray
-        $xrayUrl = "https://xray.cloud.getxray.app/api/v2/import/execution/cucumber"
-        Invoke-RestMethod -Uri $xrayUrl -Method Post -Body $TEST_RESULTS -Headers @{ Authorization = "Bearer $TOKEN" } -ContentType "application/json"
+        Invoke-RestMethod -Uri "https://xray.cloud.getxray.app/api/v2/import/execution/cucumber" -Method POST -Headers $headers -Body $body
+      shell: pwsh  # Using PowerShell
