@@ -55,7 +55,7 @@ jobs:
             testExecutionKey = $TEST_EXECUTION_KEY
             tests = @(
                 @{
-                    testKey = "TEST-1"
+                    testKey = "SCRUM-5"
                     status = "PASS"
                 }
             )
