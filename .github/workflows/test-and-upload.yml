@@ -37,7 +37,17 @@ jobs:
         $authUrl = "https://xray.cloud.getxray.app/api/v2/authenticate"
         $authBody = @{ client_id = $clientId; client_secret = $clientSecret } | ConvertTo-Json
         $authResponse = Invoke-RestMethod -Uri $authUrl -Method Post -Body $authBody -ContentType "application/json"
-        $TOKEN = $authResponse | Select-Object -ExpandProperty token
+        
+        # Log the response to debug
+        Write-Host "Authentication Response: $($authResponse | ConvertTo-Json -Depth 5)"
+        
+        # Check if the token exists in the response
+        if ($authResponse.token) {
+          $TOKEN = $authResponse.token
+        } else {
+          Write-Host "Authentication failed. Response: $($authResponse | ConvertTo-Json -Depth 5)"
+          exit 1
+        }
 
         # Define the Test Execution Key and Test Results
         $TEST_EXECUTION_KEY = "NEW_KEY"  # Optionally, use an existing Test Execution Key
