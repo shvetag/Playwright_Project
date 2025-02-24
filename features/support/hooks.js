@@ -20,6 +20,19 @@ AfterStep( async function ({result}) {
     }
   });
 
-After(function () {
-    console.log("Scenario tested sucessfully. I'm in after block")
-  });
+  After(async function () {
+    console.log("Scenario tested successfully. I'm in after block");
+
+    // Close browser after scenario execution
+    if (this.page) {
+      await this.page.close();  // Ensure page is closed
+  }
+
+  if (this.context) {
+      await this.context.close(); // Close context
+  }
+
+  if (this.browser) {
+      await this.browser.close(); // Close browser
+  }
+});

@@ -1,0 +1,114 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "ecommerce-test-validation-after-xray-configuration;placing-the-order1",
+        "keyword": "Scenario Outline",
+        "line": 14,
+        "name": "Placing the order1",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 584271199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "a login to ecommerce application with \"gshveta7@gmail.com\" and \"Parnika@0520\"",
+            "match": {
+              "location": "features\\stepDefinitions\\steps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7732713500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 7,
+            "name": "Add \"ZARA COAT 3\" to cart",
+            "match": {
+              "location": "features\\stepDefinitions\\steps.js:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1767140300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "Verify \"ZARA COAT 3\" is displayed on the cart",
+            "match": {
+              "location": "features\\stepDefinitions\\steps.js:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 349284300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "Enter valid details and Place the order",
+            "match": {
+              "location": "features\\stepDefinitions\\steps.js:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1239793099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "Verify order is present in Orderhistory",
+            "match": {
+              "location": "features\\stepDefinitions\\steps.js:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 618865298
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 13370300
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@Regression",
+            "line": 3
+          },
+          {
+            "name": "@XrayTestKey=SCRUM-5",
+            "line": 4
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "ecommerce-test-validation-after-xray-configuration",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Ecommerce test validation after Xray Configuration",
+    "tags": [],
+    "uri": "features\\Ecommerce.feature"
+  }
+]

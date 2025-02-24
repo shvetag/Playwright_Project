@@ -1,9 +1,7 @@
 name: Run Tests and Upload Results to Xray
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  # Allows manual triggering from GitHub Actions UI
 
 jobs:
   test-and-report:
@@ -33,6 +31,6 @@ jobs:
     - name: Upload Test Results to Xray
       run: |
         TOKEN=$(curl -H "Content-Type: application/json" -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" -d '{"client_id": "${{ secrets.XRAY_CLIENT_ID }}", "client_secret": "${{ secrets.XRAY_CLIENT_SECRET }}"}' | tr -d '"')
-        
-        Invoke-RestMethod -Uri "https://xray.cloud.getxray.app/api/v2/import/execution/cucumber" -Method Post -Headers @{"Content-Type"="application/json"; "Authorization"="Bearer $TOKEN"} -InFile "reports/cucumber-report.json"
-        shell: pwsh
+
+        curl -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/cucumber" --data-binary "@reports/cucumber-report.json"
+      shell: bash
